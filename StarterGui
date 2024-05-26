@@ -3818,6 +3818,7 @@ ua.InputBegan:connect(function(a, _)
 				}):Play()
 			end
 			if not ja and Ka.Ammo < Ka.curConfig.Ammo then
+				local lasttool = Ka.tool
 				Aa = Ka.CanShoot
 				Ka.CanShoot = false
 				if Ka.Ammo > 0 then
@@ -3847,27 +3848,29 @@ ua.InputBegan:connect(function(a, _)
 						end
 					end
 					IdleAnim()
-					if Ka.Ammo <= 0 then
-						if (Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)) < 0 then
-							Ka.Ammo = Ka.Ammo + Ka.StoredAmmo
-							Ka.StoredAmmo = 0
-						else
-							Ka.StoredAmmo = Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)
-							Ka.Ammo = Ka.curConfig.Ammo
+					if Ka.tool == lasttool then
+						if Ka.Ammo <= 0 then
+							if (Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)) < 0 then
+								Ka.Ammo = Ka.Ammo + Ka.StoredAmmo
+								Ka.StoredAmmo = 0
+							else
+								Ka.StoredAmmo = Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)
+								Ka.Ammo = Ka.curConfig.Ammo
+							end
+						elseif Ka.Ammo > 0 then
+							if (Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)) < 0 then
+								Ka.Ammo = Ka.Ammo + Ka.StoredAmmo + 1
+								Ka.StoredAmmo = 0
+							else
+								Ka.StoredAmmo = Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)
+								Ka.Ammo = Ka.curConfig.Ammo + 1
+							end
 						end
-					elseif Ka.Ammo > 0 then
-						if (Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)) < 0 then
-							Ka.Ammo = Ka.Ammo + Ka.StoredAmmo + 1
-							Ka.StoredAmmo = 0
-						else
-							Ka.StoredAmmo = Ka.StoredAmmo - (Ka.curConfig.Ammo - Ka.Ammo)
-							Ka.Ammo = Ka.curConfig.Ammo + 1
+						ma = false
+						if Ka.curConfig.CanAutoBolt or ta or Ka.curConfig.CanSlideLock or Ka.FireMode == 6 then
+							Ka.CanShoot = true
+							Aa = true
 						end
-					end
-					ma = false
-					if Ka.curConfig.CanAutoBolt or ta or Ka.curConfig.CanSlideLock or Ka.FireMode == 6 then
-						Ka.CanShoot = true
-						Aa = true
 					end
 				end
 			elseif ja then
